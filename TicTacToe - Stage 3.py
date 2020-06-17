@@ -36,38 +36,36 @@ for i in range(0,len(cells)):
 
 print('---------')
 
-if num_blank != 0:
+if (cells[0] == cells[1] and cells[1] == cells[2] and cells[2] == 'X'
+or cells[3] == cells[4] and cells[4] == cells[5] and cells[5] == 'X'
+or cells[6] == cells[7] and cells[7] == cells[8] and cells[8] == 'X'
+or cells[1] == cells[4] and cells[4] == cells[7] and cells[7] == 'X'
+or cells[0] == cells[4] and cells[4] == cells[8] and cells[8] == 'X'
+or cells[2] == cells[4] and cells[4] == cells[6] and cells[6] == 'X'
+or cells[0] == cells[3] and cells[3] == cells[6] and cells[6] == 'X'
+or cells[2] == cells[5] and cells[5] == cells[8] and cells[8] == 'X'):
+  winner_X = True
+  
+if (cells[0] == cells[1] and cells[1] == cells[2] and cells[2] == 'O'
+or cells[3] == cells[4] and cells[4] == cells[5] and cells[5] == 'O'
+or cells[6] == cells[7] and cells[7] == cells[8] and cells[8] == 'O'
+or cells[1] == cells[4] and cells[4] == cells[7] and cells[7] == 'O'
+or cells[0] == cells[4] and cells[4] == cells[8] and cells[8] == 'O'
+or cells[2] == cells[4] and cells[4] == cells[6] and cells[6] == 'O'
+or cells[0] == cells[3] and cells[3] == cells[6] and cells[6] == 'O'
+or cells[2] == cells[5] and cells[5] == cells[8] and cells[8] == 'O'):
+  winner_O = True
+
+if abs(num_X - num_O) >= 2:
+  print('Impossible')
+elif winner_X == True and winner_O == True:
+    print('Impossible')
+elif bool(winner_X) != bool(winner_O):  # XOR operation
+  if winner_X == True:
+      print('X wins')
+  elif winner_O == True:
+      print('O wins')
+elif num_blank == 0 and not(winner_X == True or winner_O == True):
+    print('Draw')
+else:
     print('Game not finished')
-elif num_blank == 0:
-
-      
-    if (cells[0] == cells[1] and cells[1] == cells[2] and cells[2] == 'X'
-    or cells[3] == cells[4] and cells[4] == cells[5] and cells[5] == 'X'
-    or cells[6] == cells[7] and cells[7] == cells[8] and cells[8] == 'X'
-    or cells[1] == cells[4] and cells[4] == cells[7] and cells[7] == 'X'
-    or cells[0] == cells[4] and cells[4] == cells[8] and cells[8] == 'X'
-    or cells[2] == cells[4] and cells[4] == cells[6] and cells[6] == 'X'):
-      winner_X = True
-      print('X on')
-    if (cells[0] == cells[1] and cells[1] == cells[2] and cells[2] == 'O'
-    or cells[3] == cells[4] and cells[4] == cells[5] and cells[5] == 'O'
-    or cells[6] == cells[7] and cells[7] == cells[8] and cells[8] == 'O'
-    or cells[1] == cells[4] and cells[4] == cells[7] and cells[7] == 'O'
-    or cells[0] == cells[4] and cells[4] == cells[8] and cells[8] == 'O'
-    or cells[2] == cells[4] and cells[4] == cells[6] and cells[6] == 'O'):
-      winner_O = True
-      print('O on')
-
-    
-    if not(winner_X == True or winner_O == True):
-      print('Draw')          
-    elif abs(num_X - num_O) >= 2:
-      print('Impossible!')
-    elif winner_X == True and winner_O == True:
-        print('Impossible!')
-    elif not(winner_X == True and winner_O == True):
-      if winner_X == True:
-          print('X wins')
-      elif winner_O == True:
-          print('O wins')
-
