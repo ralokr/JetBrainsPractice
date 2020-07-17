@@ -2,4 +2,5 @@ import requests
 
 
 def check_success(url):
-    pass
+    r = requests.get(url)
+    return "Success" if r else "Fail"

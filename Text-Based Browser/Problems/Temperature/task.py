@@ -11,3 +11,7 @@ def celsius_to_fahrenheit(temps_c):
 def main():
     """Entry point of the program."""
     temperature, unit = input().split()  # read the input
+    if unit == 'F':
+        print(str(fahrenheit_to_celsius(int(temperature))) + " C")
+    elif unit == 'C':
+        print(str(celsius_to_fahrenheit(int(temperature))) + " F")

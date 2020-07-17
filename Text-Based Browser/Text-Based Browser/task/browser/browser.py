@@ -1,48 +1,87 @@
+import re
+import os
+import sys
+import requests
+from bs4 import BeautifulSoup
+from colorama import init, Style
 
-nytimes_com = '''
-This New Liquid Is Magnetic, and Mesmerizing
+def createFile(url, content):
+    filename = directory + '\\' + re.sub("https://", ".com", url) + '.txt'
+    print(filename)
+    with open(filename, 'w+', encoding="utf-8") as file:
+        file.write(content)
+        file.seek(0)
+        for line in file:
+            if "blue_font_here " in line:
+                print(blue + line.lstrip("blue_font_here "))
+            else:
+                print(line)
+        print(Style.RESET_ALL)
 
-Scientists have created “soft” magnets that can flow 
-and change shape, and that could be a boon to medicine 
-and robotics. (Source: New York Times)
+def readFile(url):
+    try:
+        filename = directory + re.sub("https://", ".com", url) + '.txt'
+        with open(filename, 'r', encoding="utf-8") as file:
+            for line in file:
+                if "blue_font_here " in line:
+                    print(blue + line.lstrip("blue_font_here "))
+                else:
+                    print(line)
+        print(Style.RESET_ALL)
+    except FileNotFoundError:
+        print("function Error! Enter a valid URL.")
 
-
-Most Wikipedia Profiles Are of Men. This Scientist Is Changing That.
-
-Jessica Wade has added nearly 700 Wikipedia biographies for
- important female and minority scientists in less than two 
- years.
-
-'''
-
-bloomberg_com = '''
-The Space Race: From Apollo 11 to Elon Musk
-
-It's 50 years since the world was gripped by historic images
- of Apollo 11, and Neil Armstrong -- the first man to walk 
- on the moon. It was the height of the Cold War, and the charts
- were filled with David Bowie's Space Oddity, and Creedence's 
- Bad Moon Rising. The world is a very different place than 
- it was 5 decades ago. But how has the space race changed since
- the summer of '69? (Source: Bloomberg)
-
-
-Twitter CEO Jack Dorsey Gives Talk at Apple Headquarters
-
-Twitter and Square Chief Executive Officer Jack Dorsey 
- addressed Apple Inc. employees at the iPhone maker’s headquarters
- Tuesday, a signal of the strong ties between the Silicon Valley giants.
-'''
 
 # write your code here
 
+directory = sys.argv[1]
+choice = True
+pages = []
+blue='\033[34m'
 
-x = True
-while x:
-  url = input()
-  if url == 'nytimes.com':
-      print(nytimes_com)
-  elif url == 'bloomberg.com':
-      print(bloomberg_com)
-  elif url == 'exit':
-    x = False
+if not (os.path.exists(directory)):
+    os.mkdir(directory)
+
+while choice:
+    url = input()
+
+    if "." not in url:
+        if url != 'exit':
+            read_url = ''
+            for i in pages:
+                if url in i:
+                    read_url = i
+            try:
+                r = requests.get(read_url if "https://" in read_url else "https://" + read_url)
+                if url == 'back':
+                    if len(pages) == 1:
+                        pass
+                    else:
+                        pages.pop()
+                        readFile(pages[-1])
+                elif r:
+                    readFile(url)
+                    pages.append(url)
+            except requests.exceptions.InvalidURL:
+                print("Error! Enter a valid URL.")
+                continue
+        elif url == 'exit':
+            choice = False
+
+    else:
+        r = requests.get(url if "https://" in url else "https://" + url)
+        soup = BeautifulSoup(r.content, 'html.parser')
+        content = ''
+        for i in soup.find_all(['p','a','ul','ol',re.compile('^h[1-6]$')]):
+            if i.has_attr('href'):
+                content += "blue_font_here " + i.get_text() + '\n'
+            else:
+                content += i.get_text() + '\n'
+
+        if r:
+            createFile(url, content)
+            pages.append(url)
+            print(pages)
+        else:
+            print("Error! Enter a valid URL.")
+

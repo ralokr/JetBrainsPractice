@@ -106,5 +106,9 @@ files:
     TextBasedBrowserTest('browser.browser').run_tests()
   learner_created: false
 feedback_link: https://hyperskill.org/projects/79/stages/440/implement
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/79/stages/440/implement">JetBrains
+    Academy</a>
+  time: Fri, 17 Jul 2020 02:59:57 UTC
+record: 5
